@@ -56,7 +56,8 @@ async function main() {
       // AI モデルを指定
       // 引数で最新のモデルを指定している
       // model: google("gemini-2.5-pro-exp-03-25"),
-      model: anthropic("claude-3-opus-20240229"),
+      // model: anthropic("claude-3-opus-20240229"),
+      model: anthropic("claude-3-7-sonnet-latest"),
       messages,
       tools,
       maxSteps: 5
