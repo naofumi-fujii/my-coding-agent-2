@@ -8,5 +8,6 @@
   "keywords": [],
   "author": "naofumi-fujii",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "type": "module"
 }
