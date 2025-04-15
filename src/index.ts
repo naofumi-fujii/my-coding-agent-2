@@ -21,15 +21,13 @@ const mcpClient = await createMCPClient({
   }),
 });
 
+function shutdown() {
+  mcpClient.close();
+  process.exit(0);
+}
 
-process.on("SIGINT", () => {
-  mcpClient.close();
-  process.exit(0);
-});
-process.on("SIGTERM", () => {
-  mcpClient.close();
-  process.exit(0);
-});
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
  
 // 環境変数を .env ファイルから読み込む
 dotenv.config();
