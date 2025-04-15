@@ -1,4 +1,5 @@
-import { google } from "@ai-sdk/google";
+// import { google } from "@ai-sdk/google";
+import { anthropic } from "@ai-sdk/anthropic";
 import { CoreMessage, streamText } from "ai";
 import dotenv from "dotenv";
 import * as readline from "node:readline/promises";
@@ -26,7 +27,8 @@ async function main() {
     const result = streamText({
       // AI モデルを指定
       // 引数で最新のモデルを指定している
-      model: google("gemini-2.5-pro-exp-03-25"),
+      // model: google("gemini-2.5-pro-exp-03-25"),
+      model: anthropic("claude-3-opus-20240229"),
       messages,
     });
  
