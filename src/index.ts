@@ -6,6 +6,8 @@ import * as readline from "node:readline/promises";
 
 import { experimental_createMCPClient as createMCPClient } from "ai";
 import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
+
+const current_dir = process.cwd();
  
 const mcpClient = await createMCPClient({
   transport: new StdioMCPTransport({
@@ -14,9 +16,11 @@ const mcpClient = await createMCPClient({
       "-y",
       "@modelcontextprotocol/server-filesystem",
       import.meta.dirname, // ここには読み書きを許可するディレクトリを指定
+      current_dir
     ],
   }),
 });
+
 
 process.on("SIGINT", () => {
   mcpClient.close();
