@@ -40,6 +40,3 @@ npm start
 ## 参考リンク
 
 - コーディング AI エージェントを自作してみよう https://azukiazusa.dev/blog/build-your-own-coding-ai-agent/
-- Vercel AI SDK と mastra を使った AI Agent 開発 Tips https://zenn.dev/bm_sms/articles/vercel_ai_sdk_mastra_ai_agent
-- 【AIエージェント】MCPサーバーって何？ https://zenn.dev/tomo0108/articles/6b472b4c9cacfa
-- Mastraで作るAIエージェント入門 https://zenn.dev/serinuntius/books/4346a0fc6818f3
