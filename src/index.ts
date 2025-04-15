@@ -3,6 +3,29 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { CoreMessage, streamText } from "ai";
 import dotenv from "dotenv";
 import * as readline from "node:readline/promises";
+
+import { experimental_createMCPClient as createMCPClient } from "ai";
+import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
+ 
+const mcpClient = await createMCPClient({
+  transport: new StdioMCPTransport({
+    command: "npx",
+    args: [
+      "-y",
+      "@modelcontextprotocol/server-filesystem",
+      import.meta.dirname, // ここには読み書きを許可するディレクトリを指定
+    ],
+  }),
+});
+
+process.on("SIGINT", () => {
+  mcpClient.close();
+  process.exit(0);
+});
+process.on("SIGTERM", () => {
+  mcpClient.close();
+  process.exit(0);
+});
  
 // 環境変数を .env ファイルから読み込む
 dotenv.config();
@@ -23,6 +46,7 @@ async function main() {
     // ユーザー入力をチャットの履歴として追加
     messages.push({ role: "user", content: userInput });
  
+    const tools = await mcpClient.tools();
     // streamText 関数はストリーミングで応答を生成する
     const result = streamText({
       // AI モデルを指定
@@ -30,6 +54,8 @@ async function main() {
       // model: google("gemini-2.5-pro-exp-03-25"),
       model: anthropic("claude-3-opus-20240229"),
       messages,
+      tools,
+      maxSteps: 5
     });
  
     let fullResponse = "";
