@@ -4,7 +4,7 @@ my-coding-agent-2は、Anthropic Claudeモデルを活用したコーディン�
 
 ## 特徴
 
-- Anthropic Claude-3-Opusモデルを使用
+- Anthropic Claude-3-7-Sonnetモデルを使用
 - ターミナルインターフェースでの対話
 - ファイルシステムへのアクセス機能
 - テキスト応答のストリーミング表示
