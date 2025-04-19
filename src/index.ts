@@ -7,7 +7,7 @@ import * as readline from "node:readline/promises";
 import { experimental_createMCPClient as createMCPClient } from "ai";
 import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
 
-import { systemPrompt } from "./prompts/system";
+import { systemPrompt } from "./prompts/system.js";
 
 // ANSI color codes for terminal output
 const colors = {
@@ -60,6 +60,7 @@ function checkEnvironmentVariables() {
 // Initialize MCP client
 async function initializeMCPClient() {
   const current_dir = process.cwd();
+  const dirname = new URL('.', import.meta.url).pathname;
 
   return await createMCPClient({
     transport: new StdioMCPTransport({
@@ -67,7 +68,7 @@ async function initializeMCPClient() {
       args: [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        import.meta.dirname, // Directory with read/write permissions
+        dirname, // Directory with read/write permissions
         current_dir
       ],
     }),
@@ -83,7 +84,7 @@ function createTerminalInterface() {
 }
 
 // Handle user input
-async function getUserInput(terminal) {
+async function getUserInput(terminal: readline.Interface) {
   const userInput = await terminal.question(`${colors.fg.green}${colors.bright}You: ${colors.reset}`);
 
   // Check for exit commands
@@ -95,7 +96,7 @@ async function getUserInput(terminal) {
 }
 
 // Process AI response
-async function processAIResponse(terminal, messages, mcpClient) {
+async function processAIResponse(terminal: readline.Interface, messages: CoreMessage[], mcpClient: any) {
   const tools = await mcpClient.tools();
 
   const result = streamText({
@@ -103,7 +104,7 @@ async function processAIResponse(terminal, messages, mcpClient) {
     messages,
     tools,
     maxSteps: 20,
-    onStepFinish: (step) => {
+    onStepFinish: (step: any) => {
       console.log("\n\n");
     },
   });
@@ -120,14 +121,15 @@ async function processAIResponse(terminal, messages, mcpClient) {
     terminal.write("\n\n");
 
     return fullResponse;
-  } catch (error) {
-    terminal.write(`\nError generating response: ${error.message}\n\n`);
-    return `Error: ${error.message}`;
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    terminal.write(`\nError generating response: ${errorMessage}\n\n`);
+    return `Error: ${errorMessage}`;
   }
 }
 
 // Clean up resources
-function shutdown(mcpClient, terminal) {
+function shutdown(mcpClient: any, terminal: readline.Interface) {
   if (terminal) terminal.close();
   if (mcpClient) mcpClient.close();
   process.exit(0);
