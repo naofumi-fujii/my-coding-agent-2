@@ -7,7 +7,7 @@ import * as readline from "node:readline/promises";
 import { experimental_createMCPClient as createMCPClient } from "ai";
 import { Experimental_StdioMCPTransport as StdioMCPTransport } from "ai/mcp-stdio";
 
-import { systemPrompt } from "./prompts/system.js";
+import { systemPrompt } from "./prompts/system.ts";
 
 // ANSI color codes for terminal output
 const colors = {
